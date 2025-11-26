@@ -1,5 +1,6 @@
 .dashboard {
-    -fx-background-color: white ;
+    -fx-background-color: linear-gradient(to bottom, #f4f7fa, #e8ecf3);
+
 }
 
 .user_name {
@@ -13,14 +14,22 @@
     -fx-font-family: "Calibri Light";
 }
 
+.section_title{
+    -fx-font-size: 1.4em;
+    -fx-font-family: "Calibri Light";
+
+
+}
+
 .accounts_view {
-    -fx-background-color: white;
     -fx-background-radius: 10 0 0 10;
     -fx-padding: 10 0 10 0;
     -fx-alignment: center;
     -fx-border-width: 0 1 0 1;
     -fx-border-color: #DDDDDD;
     -fx-spacing: 10;
+    -fx-background-color: transparent;
+
 }
 
 .account{
@@ -38,4 +47,118 @@
 
 .account FontAwesomeIconView {
     -fx-fill: #FFFFFF;
+}
+
+
+.account_gradient{
+    -fx-background-color: linear-gradient(to right, #02326E, #00264D);
+}
+
+.account_balance{
+    -fx-text-fill: white;
+    -fx-font-family: Calibri;
+    -fx-font-size: 3em;
+    -fx-font-weight: bold;
+}
+
+.account_number{
+    -fx-text-fill: white;
+    -fx-font-family: Claibri;
+    -fx-font-size: 1.5em;
+    -fx-text-alignment: center;
+}
+
+.summary_view{
+    -fx-background-color: transparent;
+    -fx-padding: 5 10 5 10;
+    -fx-spacing: 5;
+    -fx-alignment: center_left;
+}
+
+.acc_summary_container{
+    -fx-padding: 10;
+    -fx-spacing: 10;
+    -fx-alignment: center-left;
+    -fx-background-radius: 13;
+    -fx-border-width: 1;
+    -fx-background-color: white;
+}
+
+.acc_summary_container Line{
+    -fx-stroke: #AAAAAA;
+}
+
+.income_amount{
+    -fx-text-fill: #0A021E;
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 1.5em;
+}
+
+
+.expense_amount{
+    -fx-text-fill: #AA0000;
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 1.5em;
+}
+
+/*transanctions tab*/
+.transaction_listview{
+    -fx-background-color: white;
+   -fx-background-radius: 13;
+}
+
+
+.transaction_listview .scroll_bar:vertical{
+    -fx-scale-x: 0;
+}
+
+.list-cell{
+    -fx-background-color: #EEEEEE;
+    -fx-padding: 15 0 15 0;
+}
+
+
+.new_trans_container{
+    -fx-background-color: white;
+    -fx-padding: 20 10 20 10;
+    -fx-spacing: 10;
+    -fx-background-radius: 13;
+    -fx-alignment: center_left;
+}
+
+
+.new_trans_container Label{
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 1.3em;
+
+}
+
+.new_trans_container TextField{
+    -fx-pref-height: 40;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #AAAAAA;
+    -fx-border-radius: 6;
+    /*-fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 3, 0);*/
+}
+
+.new_trans_container TextArea{
+    -fx-pref-height: 70;
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #AAAAAA;
+    -fx-border-radius: 6;
+    /*-fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 3, 0);*/
+}
+
+.new_trans_container Button{
+    -fx-background-color: linear-gradient(to right, #02326E, #00264D);
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3, 0, 3, 0);
+    -fx-pref-width: 230;
+    -fx-font-size: 1.5em;
+    -fx-font-family: "Calibri Light";
+    -fx-text-fill: #FFFFFF;
+}
+
+.new_trans_container Button:hover{
+    -fx-cursor: hand;
 }
