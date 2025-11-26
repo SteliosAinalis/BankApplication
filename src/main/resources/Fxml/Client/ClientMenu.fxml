@@ -14,7 +14,7 @@
             <FontAwesomeIconView glyphName="BANK" size="30" />
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Bank" />
         </VBox>
-        <VBox prefHeight="400.0" prefWidth="160.0" styleClass="menu_container" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+        <VBox alignment="TOP_CENTER" prefHeight="400.0" prefWidth="160.0" styleClass="menu_container" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
             <Button fx:id="dashboard_btn" mnemonicParsing="false" text="Dashboard">
                 <graphic>
                     <FontAwesomeIconView glyphName="HOME" size="20" />

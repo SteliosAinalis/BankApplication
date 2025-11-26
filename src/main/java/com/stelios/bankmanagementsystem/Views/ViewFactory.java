@@ -28,7 +28,7 @@ public class ViewFactory {
     }
 
     public void showClientWindow(){
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/Client.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/Client/Client.fxml"));
         ClientController clientController = new ClientController();
         fxmlLoader.setController(clientController);
         createStage(fxmlLoader);
@@ -47,6 +47,11 @@ public class ViewFactory {
         stage.setScene(scene);
         stage.setTitle("Bank");
         stage.show();
+    }
+
+
+    public void closeStage(Stage stage){
+        stage.close();
     }
 
 

@@ -17,11 +17,11 @@
     <VBox layoutX="238.0" layoutY="53.0" prefHeight="350.0" prefWidth="350.0" styleClass="login_form_container" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <Label id="choice-prompt_text" text="Account Type" />
         <ChoiceBox fx:id="acc_selector" prefWidth="150.0" styleClass="account_selector" />
-        <Label fx:id="payee_adress_lbl" text="Address:" />
-        <TextField fx:id="payee_adress_fld" styleClass="input_field" />
+        <Label fx:id="payee_address_lbl" text="Address:" />
+        <TextField fx:id="payee_address_fld" styleClass="input_field" />
         <Label text="Password:" />
         <TextField fx:id="password_fld" styleClass="input_field" />
-        <Button fx:id="login_btn" mnemonicParsing="false" text="Button" />
+        <Button fx:id="login_btn" mnemonicParsing="false" text="Login" />
         <Label fx:id="error_lbl" styleClass="error_lbl" />
     </VBox>
 </AnchorPane>
