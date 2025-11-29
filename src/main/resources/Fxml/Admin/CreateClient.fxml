@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="750.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stelios.bankmanagementsystem.Controllers.Admin.CreateClientController">
+   <children>
+      <Text layoutX="30.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Create New Client Account" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+      <VBox fillWidth="false" layoutX="15.0" layoutY="31.0" prefHeight="700.0" prefWidth="600.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
+            <TextField />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last name" />
+            <TextField />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Password" />
+            <TextField />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Payee Address:" />
+            <CheckBox mnemonicParsing="false" />
+            <Label text="Label" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Accounts" />
+            <CheckBox mnemonicParsing="false" text="Add Checking Account" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Checking Account Balance:" />
+            <TextField />
+            <CheckBox mnemonicParsing="false" text="Add Savings Account" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Savings Account Balance:" />
+            <TextField />
+            <Button mnemonicParsing="false" text="Create New Client" />
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="error:" />
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

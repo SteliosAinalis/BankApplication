@@ -1,0 +1,16 @@
+.create_client_container{
+    -fx-background-color: linear-gradient(to bottom, #f4f7fa, #e8ecf3);
+}
+
+.create_client_container Text {
+    -fx-font-size: 1.2em;
+    -fx-fill: #888888;
+}
+
+.create_client_container VBox{
+    -fx-border-width: 0 0 0 1;
+    -fx-border-color: #000000;
+    -fx-padding: 10;
+    -fx-spacing: 15;
+}
+
