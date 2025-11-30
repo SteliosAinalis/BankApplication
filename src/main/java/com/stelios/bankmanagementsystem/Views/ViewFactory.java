@@ -6,6 +6,7 @@ import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -22,7 +23,7 @@ public class ViewFactory {
     private final ObjectProperty<AdminMenuOptions> adminMenuItem;
     private AnchorPane createClientView;
     private AnchorPane clientsView;
-    //private AnchorPane depositView;
+    private AnchorPane depositView;
 
 
     public ViewFactory(){
@@ -119,6 +120,17 @@ public class ViewFactory {
         return clientsView;
     }
 
+    public AnchorPane getDepositView() {
+        if(depositView == null){
+            try {
+                depositView = new FXMLLoader(getClass().getResource("/Fxml/Admin/Deposit.fxml")).load();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return depositView;
+    }
+
 
     public void showAdminWindow(){
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Admin.fxml"));
@@ -142,6 +154,8 @@ public class ViewFactory {
         }
         Stage stage = new Stage();
         stage.setScene(scene);
+        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Images/icon.png"))));
+        stage.setResizable(false);
         stage.setTitle("Bank");
         stage.show();
     }
