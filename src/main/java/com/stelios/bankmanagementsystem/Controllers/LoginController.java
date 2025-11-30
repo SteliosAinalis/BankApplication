@@ -1,6 +1,8 @@
 package com.stelios.bankmanagementsystem.Controllers;
 
 import com.stelios.bankmanagementsystem.Models.Model;
+import com.stelios.bankmanagementsystem.Views.AccountType;
+import javafx.collections.FXCollections;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
@@ -12,7 +14,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-    public ChoiceBox acc_selector;
+    public ChoiceBox<AccountType> acc_selector;
     public TextField password_fld;
     public Button login_btn;
     public Label error_lbl;
@@ -21,6 +23,9 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        acc_selector.setItems(FXCollections.observableArrayList(AccountType.CLIENT,  AccountType.ADMIN));
+        acc_selector.setValue(Model.getInstance().getViewFactory().getLoginAccountType());
+        acc_selector.valueProperty().addListener(observable -> Model.getInstance().getViewFactory().setLoginAccountType(acc_selector.getValue()));
         login_btn.setOnAction(actionEvent -> onLogin());
     }
 
@@ -28,7 +33,11 @@ public class LoginController implements Initializable {
     private void onLogin(){
         Stage stage = (Stage) error_lbl.getScene().getWindow();
         Model.getInstance().getViewFactory().closeStage(stage);
-        Model.getInstance().getViewFactory().showClientWindow();
+        if(acc_selector.getValue() == AccountType.CLIENT){
+            Model.getInstance().getViewFactory().showClientWindow();
+        }else{
+            Model.getInstance().getViewFactory().showAdminWindow();
+        }
 
     }
 }

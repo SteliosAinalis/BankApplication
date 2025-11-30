@@ -14,3 +14,39 @@
     -fx-spacing: 15;
 }
 
+.create_client_container TextField{
+    -fx-pref-width: 250;
+    -fx-pref-height: 35;
+    -fx-background-color: white;
+    -fx-font-size: 1.3em;
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3,0,0,3);
+}
+
+.payee_address_lbl{
+    -fx-pref-width: 250;
+    -fx-pref-height: 30;
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3,0,0,3);
+    -fx-padding: 5;
+    -fx-background-color: #888888;
+    -fx-background-radius: 5;
+    -fx-text-fill: white;
+    -fx-font-size: 1.3em;
+}
+
+.create_client_container Button{
+    -fx-background-color: linear-gradient(to right, #02326E, #00264D);
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3,0,0,3);
+    -fx-pref-width: 250;
+    -fx-font-size: 1.5em;
+    -fx-font-family: "Calibri Light";
+    -fx-text-fill: white;
+}
+
+.create_client_container Button:hover{
+    -fx-cursor: hand;
+}
+
+
+.error_lbl{
+    -fx-text-fill: #FF0000;
+}

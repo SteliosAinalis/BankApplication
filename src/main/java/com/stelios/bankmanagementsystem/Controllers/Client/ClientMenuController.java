@@ -1,6 +1,7 @@
 package com.stelios.bankmanagementsystem.Controllers.Client;
 
 import com.stelios.bankmanagementsystem.Models.Model;
+import com.stelios.bankmanagementsystem.Views.ClientMenuOptions;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -31,15 +32,15 @@ public class ClientMenuController implements Initializable {
     }
 
     private void onDashboard() {
-        Model.getInstance().getViewFactory().getClientMenuItem().set("Dashboard");
+        Model.getInstance().getViewFactory().getClientMenuItem().set(ClientMenuOptions.DASHBOARD);
     }
 
     private void onTransactions() {
-        Model.getInstance().getViewFactory().getClientMenuItem().set("Transactions");
+        Model.getInstance().getViewFactory().getClientMenuItem().set(ClientMenuOptions.TRANSACTIONS);
     }
 
     private void onAccounts() {
-        Model.getInstance().getViewFactory().getClientMenuItem().set("Accounts");
+        Model.getInstance().getViewFactory().getClientMenuItem().set(ClientMenuOptions.ACCOUNTS);
     }
 
 
