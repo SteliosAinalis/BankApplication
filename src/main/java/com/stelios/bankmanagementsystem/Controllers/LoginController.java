@@ -25,19 +25,47 @@ public class LoginController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         acc_selector.setItems(FXCollections.observableArrayList(AccountType.CLIENT,  AccountType.ADMIN));
         acc_selector.setValue(Model.getInstance().getViewFactory().getLoginAccountType());
-        acc_selector.valueProperty().addListener(observable -> Model.getInstance().getViewFactory().setLoginAccountType(acc_selector.getValue()));
-        login_btn.setOnAction(actionEvent -> onLogin());
+        acc_selector.valueProperty().addListener(observable -> setAcc_selector());
+        login_btn.setOnAction(event -> onLogin());
     }
 
 
     private void onLogin(){
         Stage stage = (Stage) error_lbl.getScene().getWindow();
-        Model.getInstance().getViewFactory().closeStage(stage);
-        if(acc_selector.getValue() == AccountType.CLIENT){
-            Model.getInstance().getViewFactory().showClientWindow();
+        if(Model.getInstance().getViewFactory().getLoginAccountType() == AccountType.CLIENT){
+            //Check Payee Address and Password
+            Model.getInstance().evaluateClientCredentials(payee_address_fld.getText(), password_fld.getText());
+            if (Model.getInstance().getClientLoginSuccess()){
+                Model.getInstance().getViewFactory().showClientWindow();
+                Model.getInstance().getViewFactory().closeStage(stage);
+
+            }else{
+                payee_address_fld.setText("");
+                password_fld.setText("");
+                error_lbl.setText("Invalid Credentials");
+            }
         }else{
-            Model.getInstance().getViewFactory().showAdminWindow();
+            Model.getInstance().evaluateAdminCredentials(payee_address_fld.getText(), password_fld.getText());
+            if (Model.getInstance().getAdminLoginSuccess()){
+                Model.getInstance().getViewFactory().showAdminWindow();
+                Model.getInstance().getViewFactory().closeStage(stage);
+            }else {
+                payee_address_fld.setText("");
+                password_fld.setText("");
+                error_lbl.setText("Invalid Credentials");
+            }
         }
 
+    }
+
+
+
+    private void setAcc_selector(){
+        Model.getInstance().getViewFactory().setLoginAccountType(acc_selector.getValue());
+        if(acc_selector.getValue() == AccountType.ADMIN){
+            payee_address_lbl.setText("Username:");
+        }else {
+            payee_address_lbl.setText("Payee Address:");
+        }
     }
 }

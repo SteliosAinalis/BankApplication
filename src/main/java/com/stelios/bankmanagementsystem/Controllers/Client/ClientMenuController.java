@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
+import javafx.stage.Stage;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -29,6 +30,7 @@ public class ClientMenuController implements Initializable {
         dashboard_btn.setOnAction(event -> onDashboard());
         transaction_btn.setOnAction(event -> onTransactions());
         accounts_btn.setOnAction(event -> onAccounts());
+        logout_btn.setOnAction(event -> onLogout());
     }
 
     private void onDashboard() {
@@ -43,6 +45,12 @@ public class ClientMenuController implements Initializable {
         Model.getInstance().getViewFactory().getClientMenuItem().set(ClientMenuOptions.ACCOUNTS);
     }
 
+    private void onLogout() {
+        Stage stage = (Stage) dashboard_btn.getScene().getWindow();
+        Model.getInstance().getViewFactory().closeStage(stage);
+        Model.getInstance().getViewFactory().showLoginWindow();
+    }
+
 
 
     @Override
@@ -50,6 +58,8 @@ public class ClientMenuController implements Initializable {
 
 
         addListeners();
+
+
 
 
 

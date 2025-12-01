@@ -6,25 +6,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<AnchorPane prefHeight="50.0" prefWidth="750.0" styleClass="client_cell_container"
-            stylesheets="@../../Styles/ClientCell.css" xmlns="http://javafx.com/javafx/25"
-            xmlns:fx="http://javafx.com/fxml/1">
-    <FontAwesomeIconView glyphName="USER" layoutX="14.0" layoutY="30.0" size="20" AnchorPane.leftAnchor="14.0"
-                         AnchorPane.topAnchor="14.0"/>
-    <HBox layoutX="58.0" layoutY="-25.0" prefHeight="40.0" prefWidth="550.0" AnchorPane.leftAnchor="60.0"
-          AnchorPane.topAnchor="5.0">
-        <Label fx:id="fName_lbl" text="Stelios"/>
-        <Label fx:id="lname_lbl" text="Ainalis"/>
-        <Label fx:id="pAddress_lbl" text="\@steliosain"/>
-        <Label fx:id="ch_acc_lbl" styleClass="acc_display_lbl" text="6901249412"/>
-        <Label fx:id="sv_acc_lbl" styleClass="acc_display_lbl" text="1236412242"/>
-        <Label fx:id="date_lbl" text="2025-11-30"/>
+<AnchorPane prefHeight="50.0" prefWidth="750.0" styleClass="client_cell_container" stylesheets="@../../Styles/ClientCell.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stelios.bankmanagementsystem.Controllers.Admin.ClientCellController">
+    <FontAwesomeIconView glyphName="USER" layoutX="14.0" layoutY="30.0" size="20" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+    <HBox layoutX="58.0" layoutY="-25.0" prefHeight="40.0" prefWidth="550.0" AnchorPane.leftAnchor="60.0" AnchorPane.topAnchor="5.0">
+        <Label fx:id="fName_lbl" text="Stelios" />
+        <Label fx:id="lname_lbl" text="Ainalis" />
+        <Label fx:id="pAddress_lbl" text="\@steliosain" />
+        <Label fx:id="ch_acc_lbl" styleClass="acc_display_lbl" text="6901249412" />
+        <Label fx:id="sv_acc_lbl" styleClass="acc_display_lbl" text="1236412242" />
+        <Label fx:id="date_lbl" text="2025-11-30" />
     </HBox>
-    <Button fx:id="delete_btn" layoutX="658.0" layoutY="13.0" mnemonicParsing="false" styleClass="delete_btn"
-            text="Delete" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="12.0">
+    <Button fx:id="delete_btn" layoutX="658.0" layoutY="13.0" mnemonicParsing="false" styleClass="delete_btn" text="Delete" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="12.0">
         <graphic>
-          <FontAwesomeIconView glyphName="WINDOW_CLOSE_ALT" size="15"/>
+          <FontAwesomeIconView glyphName="WINDOW_CLOSE_ALT" size="15" />
         </graphic>
     </Button>
 </AnchorPane>

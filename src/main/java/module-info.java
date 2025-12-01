@@ -4,6 +4,7 @@ module com.stelios.bankmanagementsystem {
     requires de.jensd.fx.glyphs.fontawesome;
     requires java.sql;
     requires org.xerial.sqlitejdbc;
+    requires javafx.graphics;
 
 
     opens com.stelios.bankmanagementsystem to javafx.fxml;
