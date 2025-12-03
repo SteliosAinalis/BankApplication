@@ -5,7 +5,7 @@
 .search_box{
     -fx-spacing: 10;
     -fx-border-color: #AAAAAA;
-    -fx-border-width: 0 0 1 0;
+    -fx-border-width: 0 0 0 0;
 }
 
 Text{
@@ -38,12 +38,13 @@ Button:hover{
 
 
 .list-view{
-    -fx-background-color: linear-gradient(to bottom, #f4f7fa, #e8ecf3);
+    -fx-background-color: white;
+    -fx-background-radius: 5;
     -fx-border-width: 0;
 }
 
 .list-cell{
-    -fx-background-color: linear-gradient(to bottom, #f4f7fa, #e8ecf3);
+    -fx-background-color: white;
     -fx-padding: 20 0 20 0;
 }
 
@@ -52,6 +53,6 @@ Button:hover{
     -fx-padding: 20;
     -fx-font-family: "Calibri Light";
     -fx-font-size: 1.6em;
-    -fx-fill: #555555;
+    -fx-background-color: transparent;
 }
 

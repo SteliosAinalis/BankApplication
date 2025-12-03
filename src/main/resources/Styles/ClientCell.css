@@ -16,7 +16,7 @@
 .client_cell_container HBox Label{
     -fx-text-fill: #444444;
     -fx-font-family: "Calibri Light";
-    -fx-font-size: 1.5em;
+    -fx-font-size: 1.3em;
 }
 
 .acc_display_lbl {
@@ -27,7 +27,8 @@
 
 .delete_btn{
     -fx-text-fill: white;
-    -fx-background-color: #FF0000;
+    -fx-background-color: #cf0a0a;
+    -fx-border-color: #4b0909;
 }
 
 .delete_btn FontAwesomeIconView{

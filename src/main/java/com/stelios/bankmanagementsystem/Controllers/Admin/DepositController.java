@@ -12,6 +12,8 @@ public class DepositController implements Initializable {
     public TextField pAddress_fld;
     public Button search_btn;
     public ListView result_listview;
+    public Button deposit_btn;
+    public TextField amount_fld;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

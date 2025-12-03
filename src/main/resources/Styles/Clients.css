@@ -1,5 +1,6 @@
 .clients_container{
     -fx-background-color: linear-gradient(to bottom, #f4f7fa, #e8ecf3);
+
 }
 
 .clients_container Text{
@@ -9,11 +10,11 @@
 }
 
 .clients_container .list-view{
-    -fx-background-color: white;
+    -fx-background-color: transparent;
     -fx-border-width: 0;
 }
 
 .clients_container .list-cell{
-    -fx-background-color: white;
+    -fx-background-color: transparent;
     -fx-padding: 10 0 10 0;
 }

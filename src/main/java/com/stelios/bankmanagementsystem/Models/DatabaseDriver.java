@@ -10,7 +10,7 @@ public class DatabaseDriver {
         try{
             this.connection = DriverManager.getConnection("jdbc:sqlite:bank.db");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error connecting to database.");
         }
     }
 
@@ -28,7 +28,6 @@ public class DatabaseDriver {
 
         }catch(SQLException e){
             System.err.println("DATABASE ERROR executing getClientData query.");
-            e.printStackTrace();
         }
         return resultSet;
     }
@@ -44,7 +43,6 @@ public class DatabaseDriver {
             resultSet = statement.executeQuery("SELECT * FROM Admins WHERE Username='"+username+"' AND Password= '"+password + "';");
         }catch(SQLException e){
             System.err.println("DATABASE ERROR executing getAdminData query.");
-            e.printStackTrace();
         }
         return resultSet;
     }
@@ -66,7 +64,7 @@ public class DatabaseDriver {
         try{
             statement = this.connection.createStatement();
             statement.executeUpdate("INSERT INTO " +
-                    "CheckingsAccounts(Onwer, AccountNumber, TransactionLimit, Balance)"+
+                    "CheckingAccounts(Owner, AccountNumber, TransactionLimit, Balance)"+
                     "VALUES ('"+owner+"', '"+number+"', '"+tLimit+"', '"+balance+"');");
         }catch(SQLException e){
             System.err.println("DATABASE ERROR executing createCheckingAccount query.");
@@ -78,11 +76,23 @@ public class DatabaseDriver {
         try{
             statement = this.connection.createStatement();
             statement.executeUpdate("INSERT INTO " +
-                    "SavingsAccounts(Onwer, AccountNumber, WithdrawalLimit, Balance)"+
+                    "SavingsAccounts(Owner, AccountNumber, WithdrawalLimit, Balance)"+
                     "VALUES ('"+owner+"', '"+number+"', '"+wLimit+"', '"+balance+"');");
         }catch(SQLException e){
             System.err.println("DATABASE ERROR executing createSavingsAccount query.");
         }
+    }
+
+    public ResultSet getAllClientsData(){
+        Statement statement;
+        ResultSet resultSet = null;
+        try{
+            statement = this.connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM Clients;");
+        } catch (SQLException e) {
+            System.err.println("DATABASE ERROR executing get all clients data query.");
+        }
+        return resultSet;
     }
 
 
@@ -99,6 +109,33 @@ public class DatabaseDriver {
             System.err.println("DATABASE ERROR executing getLastClientsId query.");
         }
         return id;
+    }
+
+    public ResultSet getCheckingAccountsData(String pAddress){
+        Statement statement;
+        ResultSet resultSet = null;
+        try{
+            statement = this.connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM CheckingAccounts WHERE Owner='"+pAddress+"';");
+        }catch(SQLException e){
+            System.err.println("DATABASE ERROR executing getCheckingAccountsData query.");
+        }
+        return resultSet;
+
+    }
+
+
+    public ResultSet getSavingsAccountsData(String pAddress){
+        Statement statement;
+        ResultSet resultSet = null;
+        try{
+            statement = this.connection.createStatement();
+            resultSet = statement.executeQuery("SELECT * FROM SavingsAccounts WHERE Owner='"+pAddress+"';");
+        }catch(SQLException e){
+            System.err.println("DATABASE ERROR executing getSavingsAccountsData query.");
+        }
+        return resultSet;
+
     }
 
 }

@@ -1,20 +1,20 @@
 
 
 .main_menu_container {
-    -fx-background-color: #f4f7fa;
+    -fx-background-color: linear-gradient(to bottom, #f4f7fa, #e8ecf3);
     -fx-alignment: center;
     -fx-padding: 0 10 0 10;
 }
 
 .left_container {
-    /*-fx-background-color: #f4f7fa;*/
+
     -fx-background-color: white;
     -fx-background-radius: 10;
     -fx-effect: dropshadow(two-pass-box, #AAAAAA, 5, 0, 0, 4);
 }
 
 .title_container{
-    /*-fx-background-color: #f4f7fa;*/
+
     -fx-background-color: white;
 
     -fx-background-radius: 20 20 0 0;
@@ -36,7 +36,7 @@
 .menu_container {
     -fx-padding: 10 10 10 10;
     -fx-spacing: 20;
-    /*-fx-background-color: #f4f7fa;*/
+
     -fx-background-color: white;
 
 
@@ -45,7 +45,7 @@
 .menu_container Button{
     -fx-pref-width: 120;
     -fx-pref-height: 40;
-    /*-fx-background-color: white;*/
+
     -fx-background-color: #f4f7fa;
     -fx-background-radius: 10;
     -fx-text-fill: #02326E ;
