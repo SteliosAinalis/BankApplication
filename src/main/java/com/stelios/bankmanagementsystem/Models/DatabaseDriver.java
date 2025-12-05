@@ -33,14 +33,16 @@ public class DatabaseDriver {
     }
 
 
-    public ResultSet getTransactions(String pAddress, int limit){
+    public ResultSet getTransactions(String pAddress, int limit) {
         Statement statement;
         ResultSet resultSet = null;
-        try{
+        try {
             statement = this.connection.createStatement();
-            resultSet = statement.executeQuery("SELECT * FROM Transactions WHERE Sender='"+pAddress+"' OR Receiver='"+pAddress+"' LIMIT "+limit+";");
-        }catch(SQLException e){
-            System.err.println("DATABASE ERROR executing getTransactions query.");
+            resultSet = statement.executeQuery("SELECT * FROM Transactions " +
+                    "WHERE Sender='"+pAddress+"' OR Receiver='"+pAddress+"' " +
+                    "ORDER BY Date DESC LIMIT "+limit+";");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return resultSet;
     }

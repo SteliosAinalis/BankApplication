@@ -17,41 +17,40 @@ public class Model {
 
 
     //client
-    private Client client;
+    private final ObservableList<Transaction> transactions;
+    private final Client client;
     private boolean clientLoginSuccess;
-    private final ObservableList<Transaction> latestTransactions;
-    private final ObservableList<Transaction> allTransactions;
 
     //Admin
     private boolean adminLoginSuccess;
 
 
 
-    public Model() {
+
+    private Model() {
         this.viewFactory = new ViewFactory();
         this.databaseDriver = new DatabaseDriver();
-        this.adminLoginSuccess = false;
+
+        // Client
         this.clientLoginSuccess = false;
-        this.client = new Client("","","",null,null,null,"");
-        this.latestTransactions = FXCollections.observableArrayList();
-        this.allTransactions = FXCollections.observableArrayList();
+        this.client = new Client("", "", "", null, null, null, null);
+        this.transactions = FXCollections.observableArrayList();
+
+        // Admin
+        this.adminLoginSuccess = false;
         this.clients = FXCollections.observableArrayList();
     }
 
 
     public static synchronized Model getInstance() {
-        if(model == null){
+        if (model == null) {
             model = new Model();
         }
         return model;
     }
 
     public ViewFactory getViewFactory() {return viewFactory;}
-
     public DatabaseDriver getDatabaseDriver() {return databaseDriver;}
-
-
-
 
 
     //Client methods
@@ -87,6 +86,34 @@ public class Model {
         }
     }
 
+    public ObservableList<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(String pAddress) {
+        transactions.clear();
+        ResultSet resultSet = databaseDriver.getTransactions(pAddress, 10);
+        try {
+            while (resultSet.next()) {
+                Transaction transaction = new Transaction(
+                        resultSet.getString("Sender"),
+                        resultSet.getString("Receiver"),
+                        resultSet.getDouble("Amount"),
+                        LocalDate.parse(resultSet.getString("Date")),
+                        resultSet.getString("Message")
+                );
+                transactions.add(transaction);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(0, transaction);
+    }
+
+
     private void prepareTransactions(ObservableList<Transaction> transactions, int limit) {
         ResultSet resultSet = databaseDriver.getTransactions(this.client.payeeAddressProperty().get(), limit);
         try{
@@ -104,34 +131,19 @@ public class Model {
         }
     }
 
-    public void setLatestTransactions(){
-        prepareTransactions(this.latestTransactions, 4);
-    }
-
-    public ObservableList<Transaction> getLatestTransactions() {
-        return latestTransactions;
-    }
-
-    public void setAllTransactions(){
-        prepareTransactions(this.allTransactions, -1);
-    }
-
-    public ObservableList<Transaction> getAllTransactions() {
-        return allTransactions;
-    }
 
     public void logout() {
-        this.client.firstNameProperty().set("");
-        this.client.lastNameProperty().set("");
-        this.client.payeeAddressProperty().set("");
-        this.client.dateCreatedProperty().set(null);
-        this.client.checkingAccountProperty().set(new CheckingAccount("", "", 0, 0));
-        this.client.savingsAccountProperty().set(new SavingsAccount("", "", 0, 0));
-        this.client.profileImagePathProperty().set("");
-        this.clientLoginSuccess = false;
-        if (latestTransactions != null) {
-            latestTransactions.clear();
-        }
+        client.firstNameProperty().set("");
+        client.lastNameProperty().set("");
+        client.payeeAddressProperty().set("");
+        client.dateCreatedProperty().set(null);
+        client.checkingAccountProperty().set(new CheckingAccount("", "", 0, 0));
+        client.savingsAccountProperty().set(new SavingsAccount("", "", 0, 0));
+        client.profileImagePathProperty().set("");
+        transactions.clear();
+        clientLoginSuccess = false;
+        clients.clear();
+        adminLoginSuccess = false;
     }
 
 

@@ -1,3 +1,4 @@
+
 package com.stelios.bankmanagementsystem.Controllers.Client;
 
 import com.stelios.bankmanagementsystem.Models.Model;
@@ -7,9 +8,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
-import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 
@@ -28,29 +27,26 @@ public class DashboardController implements Initializable {
     public Label savings_acc_num;
     public Label income_lbl;
     public Label expense_lbl;
-    public ListView transaction_listview;
+    public ListView<Transaction> transaction_listview;
     public TextField payee_fld;
     public TextField amount_fld;
     public TextArea message_fld;
     public Button send_money_btn;
+
+    // Snapshot Chart UI Elements
     public ToggleGroup snapshot_toggle_group;
-    public ToggleButton trend_btn;
-    public ToggleButton breakdown_btn;
-    public LineChart<String, Number> net_worth_chart;
-    public PieChart spending_pie_chart;
-    public PieChart income_pie_chart;
     public ToggleButton income_btn;
     public ToggleButton spending_btn;
-
+    public PieChart income_pie_chart;
+    public PieChart spending_pie_chart;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        userData();
-        initiallizeLatestTransactions();
-        transaction_listview.setItems(Model.getInstance().getLatestTransactions());
+        bindData();
+        Model.getInstance().setTransactions(Model.getInstance().getClient().payeeAddressProperty().get());
+        transaction_listview.setItems(Model.getInstance().getTransactions());
         transaction_listview.setCellFactory(e -> new TransactionCellFactory());
         send_money_btn.setOnAction(e -> onSendMoney());
-
         snapshot_toggle_group.selectedToggleProperty().addListener((observable, oldVal, newVal) -> {
             ToggleButton selectedBtn = (ToggleButton) newVal;
             if (selectedBtn != null) {
@@ -66,71 +62,79 @@ public class DashboardController implements Initializable {
             }
         });
         populateIncomeByPayeeChart();
+        accountSummary();
     }
 
-
-
-    private void userData() {
+    private void bindData() {
         user_name.textProperty().bind(Bindings.concat("Hi, ").concat(Model.getInstance().getClient().firstNameProperty()));
         login_date.setText("Today, " + LocalDate.now());
-        checking_bal.textProperty().bind(Model.getInstance().getClient().checkingAccountProperty().get().balanceProperty().asString());
+        checking_bal.textProperty().bind(Model.getInstance().getClient().checkingAccountProperty().get().balanceProperty().asString("$%,.2f"));
         checking_acc_num.textProperty().bind(Model.getInstance().getClient().checkingAccountProperty().get().accountNumberProperty());
-        savings_bal.textProperty().bind(Model.getInstance().getClient().savingsAccountProperty().get().balanceProperty().asString());
+        savings_bal.textProperty().bind(Model.getInstance().getClient().savingsAccountProperty().get().balanceProperty().asString("$%,.2f"));
         savings_acc_num.textProperty().bind(Model.getInstance().getClient().savingsAccountProperty().get().accountNumberProperty());
-    }
-
-    private void initiallizeLatestTransactions() {
-        if (Model.getInstance().getLatestTransactions().isEmpty()) {
-            Model.getInstance().setLatestTransactions();
-        }
     }
 
     private void onSendMoney() {
         String receiver = payee_fld.getText();
-        double amount = Double.parseDouble(amount_fld.getText());
-        String message = message_fld.getText();
         String sender = Model.getInstance().getClient().payeeAddressProperty().get();
-        ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchClient(receiver);
+        double amount;
+
         try {
-            if (resultSet.isBeforeFirst()) {
+            amount = Double.parseDouble(amount_fld.getText());
+        } catch (NumberFormatException e) {
+            System.err.println("Invalid amount entered.");
+            return;
+        }
+        String message = message_fld.getText();
+        ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchClient(receiver);
+
+
+        try {
+            if (resultSet != null && resultSet.next()) {
+                Model.getInstance().getDatabaseDriver().updateBalance(sender, amount, "SUBTRACT");
                 Model.getInstance().getDatabaseDriver().updateBalance(receiver, amount, "ADD");
+                Model.getInstance().getDatabaseDriver().newTransaction(sender, receiver, amount, message);
+                Transaction newTransaction = new Transaction(sender, receiver, amount, LocalDate.now(), message);
+                Model.getInstance().addTransaction(newTransaction);
+                updateSenderBalance(sender);
+
+                accountSummary();
+                populateIncomeByPayeeChart();
+                populateSpendingByPayeeChart();
+                payee_fld.clear();
+                amount_fld.clear();
+                message_fld.clear();
+            } else {
+                System.err.println("Receiver not found.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            System.out.println("Error sending Money in Dashboard");
+            e.printStackTrace();
+        } finally {
+            closeResources(resultSet);
         }
-
-        Model.getInstance().getDatabaseDriver().updateBalance(sender, amount, "SUBFROMSENDER");
-        try {
-            Model.getInstance().getClient().savingsAccountProperty().get().setBalance(Model.getInstance().getDatabaseDriver().getSavingsAccountBalance(sender));
-        } catch (Exception e) {
-            System.out.println("Error updating savings account");
-        }
-        Model.getInstance().getDatabaseDriver().newTransaction(sender, receiver, amount, message);
-
-        payee_fld.clear();
-        amount_fld.clear();
-        message_fld.clear();
-
     }
 
+    private void updateSenderBalance(String sender) {
+        double newSavingsBalance = Model.getInstance().getDatabaseDriver().getSavingsAccountBalance(sender);
+        Model.getInstance().getClient().savingsAccountProperty().get().setBalance(newSavingsBalance);
+
+        double newCheckingBalance = Model.getInstance().getDatabaseDriver().getCheckingAccountBalance(sender);
+        Model.getInstance().getClient().checkingAccountProperty().get().setBalance(newCheckingBalance);
+    }
 
     private void accountSummary() {
         double income = 0;
         double expenses = 0;
-        if (Model.getInstance().getAllTransactions().isEmpty()) {
-            Model.getInstance().setAllTransactions();
-        }
-        for (Transaction transaction : Model.getInstance().getAllTransactions()) {
-            if (transaction.senderProperty().get().equals(Model.getInstance().getClient().payeeAddressProperty().get())) {
-                expenses = expenses + transaction.amountProperty().get();
+        String currentUser = Model.getInstance().getClient().payeeAddressProperty().get();
+        for (Transaction transaction : Model.getInstance().getTransactions()) {
+            if (transaction.senderProperty().get().equals(currentUser)) {
+                expenses += transaction.amountProperty().get();
             } else {
-                income = income + transaction.amountProperty().get();
+                income += transaction.amountProperty().get();
             }
         }
-        income_lbl.setText("+$" + income);
-        expense_lbl.setText("-$" + expenses);
-
+        income_lbl.setText("+$" + String.format("%,.2f", income));
+        expense_lbl.setText("-$" + String.format("%,.2f", expenses));
     }
 
     private void populateIncomeByPayeeChart() {
