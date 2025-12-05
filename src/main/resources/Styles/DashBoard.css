@@ -200,7 +200,6 @@
 
 }
 
-/* Remove background color from the chart plot area for a clean look */
 .chart-plot-background {
     -fx-background-color: transparent;
 }

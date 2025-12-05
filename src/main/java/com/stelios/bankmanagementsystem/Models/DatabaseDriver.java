@@ -81,6 +81,8 @@ public class DatabaseDriver {
         }
     }
 
+
+
     public void newTransaction(String sender, String receiver, double amount, String message){
         Statement statement;
         try{
@@ -91,6 +93,43 @@ public class DatabaseDriver {
             "VALUES ('"+sender+"', '"+receiver+"', '"+amount+"', '"+date+"', '"+message+"');");
         }catch (SQLException e){
             System.err.println("Error executing newTransaction.");
+        }
+    }
+
+
+    public double getCheckingAccountBalance(String pAddress) {
+        Statement statement;
+        ResultSet resultSet;
+        double balance = 0;
+        try {
+            statement = this.connection.createStatement();
+            resultSet = statement.executeQuery("SELECT Balance FROM CheckingAccounts WHERE Owner='"+pAddress+"';");
+            if (resultSet.next()){
+                balance = resultSet.getDouble("Balance");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return balance;
+    }
+
+    public void updateCheckingBalance(String pAddress, double newBalance) {
+        Statement statement;
+        try {
+            statement = this.connection.createStatement();
+            statement.executeUpdate("UPDATE CheckingAccounts SET Balance="+newBalance+" WHERE Owner='"+pAddress+"';");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void updateSavingsBalance(String pAddress, double newBalance) {
+        Statement statement;
+        try {
+            statement = this.connection.createStatement();
+            statement.executeUpdate("UPDATE SavingsAccounts SET Balance="+newBalance+" WHERE Owner='"+pAddress+"';");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
