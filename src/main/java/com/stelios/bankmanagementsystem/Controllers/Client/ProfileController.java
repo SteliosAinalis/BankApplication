@@ -102,7 +102,6 @@ public class ProfileController implements Initializable {
         String imagePath = resultSet.getString("ProfileImagePath");
         String[] dateParts = resultSet.getString("Date").split("-");
         LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]));
-        // Note: For these lists, we don't need to load the bank accounts (pass null).
         return new Client(fName, lName, pAddress, null, null, date, imagePath);
     }
 
@@ -133,7 +132,7 @@ public class ProfileController implements Initializable {
             profile_image.setImage(new Image(getClass().getResourceAsStream("/images/profile_pics/default.jpg")));
             change_picture_btn.setText("Set Up Profile Picture");
         }
-        Circle clip = new Circle(50); // Radius should be half of the fitWidth/fitHeight
+        Circle clip = new Circle(50);
         clip.centerXProperty().bind(profile_image.fitWidthProperty().divide(2));
         clip.centerYProperty().bind(profile_image.fitHeightProperty().divide(2));
         profile_image.setClip(clip);

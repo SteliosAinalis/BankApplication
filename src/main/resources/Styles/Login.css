@@ -4,7 +4,7 @@
 
 
 .login_logo_container{
-    -fx-background-color: #02326E;
+    -fx-background-color: linear-gradient(to left, #02326E, #00264D);
     -fx-alignment: center;
 }
 
@@ -19,6 +19,7 @@
 
 .account_selector {
     -fx-background-color: #FFFFFF;
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3,0,0,3);
 }
 
 .account_selector .label{
@@ -35,7 +36,7 @@
     -fx-background-color: #FFFFFF;
 }
 
-/* Login Form styles*/
+
 
 #choice-prompt_text {
     -fx-font-weight: 400;
@@ -55,6 +56,8 @@
     -fx-background-color: #FFFFFF;
     -fx-pref-height: 35;
     -fx-font-size: 1.2em;
+    -fx-effect: dropshadow(three-pass-box, #AAAAAA, 3,0,0,3);
+
 }
 
 .login_form_container Button{

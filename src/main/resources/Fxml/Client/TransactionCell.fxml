@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 
-<HBox alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="335.0"
+<HBox fx:id="transaction_cell_container" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="335.0"
       spacing="10.0" styleClass="cell_container" stylesheets="@../../Styles/TransactionCell.css"
       xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1">
     <padding>

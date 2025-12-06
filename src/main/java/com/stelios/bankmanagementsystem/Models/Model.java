@@ -103,7 +103,6 @@ public class Model {
     public void setAllTransactions() {
         allTransactions.clear();
         String pAddress = this.client.payeeAddressProperty().get();
-        // The limit is set high to get all transactions
         ResultSet resultSet = databaseDriver.getTransactions(pAddress, 1000);
         try {
             while (resultSet.next()) {

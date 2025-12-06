@@ -28,8 +28,8 @@ public class ViewFactory {
 
 
     public ViewFactory(){
-        this.loginAccountType = AccountType.CLIENT;
         this.loginAccountType = AccountType.ADMIN;
+        this.loginAccountType = AccountType.CLIENT;
         this.clientMenuItem = new SimpleObjectProperty<>();
         this.adminMenuItem = new SimpleObjectProperty<>();
     }

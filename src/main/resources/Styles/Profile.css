@@ -11,14 +11,12 @@
     -fx-fill: #333333;
 }
 
-/* ===================================================
-   CONTAINER STYLES
-======================================================*/
+
 .profile-header, .profile-section {
     -fx-background-color: white;
     -fx-background-radius: 10;
     -fx-padding: 20px;
-    -fx-spacing: 15px; /* Added for consistency */
+    -fx-spacing: 20px;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 5);
 }
 

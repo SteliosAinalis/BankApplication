@@ -3,6 +3,10 @@
     -fx-background-radius: 8;
     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 10, 0, 0, 5);
 }
+.cell_container:hover {
+    -fx-background-color: #f0f4f7;
+    -fx-cursor: hand;
+}
 
 .trans_date_lbl {
     -fx-font-family: "Calibri";
