@@ -1,6 +1,7 @@
 package com.stelios.bankmanagementsystem.Controllers.Client;
 
 import com.stelios.bankmanagementsystem.Models.Model;
+import com.stelios.bankmanagementsystem.Views.ClientMenuOptions;
 import javafx.fxml.Initializable;
 import javafx.scene.layout.BorderPane;
 
@@ -14,8 +15,8 @@ public class ClientController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        Model.getInstance().getViewFactory().getClientMenuItem().addListener((observableValue, oldVal, newVal) -> {
 
+        Model.getInstance().getViewFactory().getClientMenuItem().addListener((observableValue, oldVal, newVal) -> {
             switch (newVal) {
                 case TRANSACTIONS -> client_parent.setCenter(Model.getInstance().getViewFactory().getTransactionsView());
                 case ACCOUNTS -> client_parent.setCenter(Model.getInstance().getViewFactory().getAccountsView());
@@ -23,5 +24,8 @@ public class ClientController implements Initializable {
                 default -> client_parent.setCenter(Model.getInstance().getViewFactory().getDashboardView());
             }
         });
+
+        Model.getInstance().getViewFactory().getClientMenuItem().set(ClientMenuOptions.DASHBOARD);
+
     }
 }

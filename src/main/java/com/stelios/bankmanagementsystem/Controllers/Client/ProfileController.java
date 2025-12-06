@@ -4,6 +4,7 @@ import com.stelios.bankmanagementsystem.Models.Client;
 import com.stelios.bankmanagementsystem.Models.Model;
 import com.stelios.bankmanagementsystem.Views.FriendCellFactory;
 import com.stelios.bankmanagementsystem.Views.SearchResultCellFactory;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -34,7 +35,6 @@ public class ProfileController implements Initializable {
     public PasswordField confirm_password_fld;
     public Button save_password_btn;
     public Label message_lbl;
-
     public ListView<Client> friends_listview;
     public TextField search_fld;
     public Button search_btn;
@@ -42,11 +42,42 @@ public class ProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        loadProfileData();
+        bindProfileImage();
+        Model.getInstance().getClient().payeeAddressProperty().addListener((observable, oldVal, newVal) -> {
+            if (newVal != null && !newVal.isEmpty()) {
+                loadFriendsList();
+            }
+        });
+
+
         loadFriendsList();
         save_password_btn.setOnAction(event -> onSavePassword());
         change_picture_btn.setOnAction(event -> onChangePicture());
         search_btn.setOnAction(event -> onSearch());
+    }
+
+    private void bindProfileImage() {
+        var imagePathProperty = Model.getInstance().getClient().profileImagePathProperty();
+
+        profile_image.imageProperty().bind(Bindings.createObjectBinding(() -> {
+            String path = imagePathProperty.get();
+            if (path != null && !path.isEmpty()) {
+                try {
+                    return new Image(getClass().getResourceAsStream(path));
+                } catch (Exception e) {
+                    System.err.println("Failed to load image from resource: " + path);
+                }
+            }
+            return new Image(getClass().getResourceAsStream("/images/profile_pics/default.png"));
+        }, imagePathProperty));
+
+        change_picture_btn.textProperty().bind(Bindings.when(imagePathProperty.isEmpty().or(imagePathProperty.isNull()))
+                .then("Set Up Profile Picture")
+                .otherwise("Change Picture"));
+        Circle clip = new Circle(40.0);
+        clip.centerXProperty().bind(profile_image.fitWidthProperty().divide(2));
+        clip.centerYProperty().bind(profile_image.fitHeightProperty().divide(2));
+        profile_image.setClip(clip);
     }
 
 
@@ -68,7 +99,6 @@ public class ProfileController implements Initializable {
         }
         search_results_listview.setItems(searchResults);
         search_results_listview.setCellFactory(e -> new SearchResultCellFactory(this));
-
         if (searchResults.isEmpty()) {
             showMessage("No clients found with that name.", true);
         } else {
@@ -76,8 +106,7 @@ public class ProfileController implements Initializable {
         }
     }
 
-
-    private void loadFriendsList() {
+    public void loadFriendsList() {
         String currentUserAddress = Model.getInstance().getClient().payeeAddressProperty().get();
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().getFriends(currentUserAddress);
         ObservableList<Client> friends = FXCollections.observableArrayList();
@@ -94,7 +123,6 @@ public class ProfileController implements Initializable {
         friends_listview.setCellFactory(e -> new FriendCellFactory(this));
     }
 
-
     private Client createClientFromResultSet(ResultSet resultSet) throws SQLException {
         String fName = resultSet.getString("FirstName");
         String lName = resultSet.getString("LastName");
@@ -104,7 +132,6 @@ public class ProfileController implements Initializable {
         LocalDate date = LocalDate.of(Integer.parseInt(dateParts[0]), Integer.parseInt(dateParts[1]), Integer.parseInt(dateParts[2]));
         return new Client(fName, lName, pAddress, null, null, date, imagePath);
     }
-
 
     private void closeResources(ResultSet resultSet) {
         try {
@@ -117,62 +144,19 @@ public class ProfileController implements Initializable {
         }
     }
 
-
-
-    private void loadProfileData() {
-        String imagePath = Model.getInstance().getClient().profileImagePathProperty().get();
-        updateProfilePictureUI(imagePath);
-    }
-
-
-
     private void onSavePassword() {
         String pAddress = Model.getInstance().getClient().payeeAddressProperty().get();
         String newPassword = new_password_fld.getText();
         String confirmPassword = confirm_password_fld.getText();
-
         if (newPassword.isBlank() || !newPassword.equals(confirmPassword)) {
             showMessage("Passwords do not match or are empty.", true);
             return;
         }
-
         Model.getInstance().getDatabaseDriver().updateClientPassword(pAddress, newPassword);
         showMessage("Password changed successfully!", false);
         new_password_fld.clear();
         confirm_password_fld.clear();
     }
-
-
-    private void updateProfilePictureUI(String imagePath) {
-        Image image = null;
-
-        if (imagePath != null && !imagePath.isEmpty()) {
-            try {
-                if (imagePath.startsWith("/") && !imagePath.startsWith("/Users/") && !imagePath.startsWith("C:\\")) {
-                    image = new Image(getClass().getResourceAsStream(imagePath));
-                    change_picture_btn.setText("Change Picture");
-                } else {
-                    image = new Image(new File(imagePath).toURI().toString());
-                    change_picture_btn.setText("Change Picture");
-                }
-            } catch (Exception e) {
-                System.err.println("ERROR: Could not load image at path: " + imagePath);
-            }
-        }
-        if (image == null) {
-            image = new Image(getClass().getResourceAsStream("/images/profile_pics/default.jpg"));
-            change_picture_btn.setText("Set Up Profile Picture");
-        }
-
-        profile_image.setImage(image);
-
-        // Apply the circular clip
-        Circle clip = new Circle(profile_image.getFitWidth() / 2);
-        clip.centerXProperty().bind(profile_image.fitWidthProperty().divide(2));
-        clip.centerYProperty().bind(profile_image.fitHeightProperty().divide(2));
-        profile_image.setClip(clip);
-    }
-
 
     private void onChangePicture() {
         FileChooser fileChooser = new FileChooser();
@@ -182,24 +166,19 @@ public class ProfileController implements Initializable {
         );
         Stage stage = (Stage) profile_image.getScene().getWindow();
         File selectedFile = fileChooser.showOpenDialog(stage);
-
         if (selectedFile != null) {
             try {
                 String pAddress = Model.getInstance().getClient().payeeAddressProperty().get();
                 File destDir = new File("src/main/resources/images/profile_pics");
-                if (!destDir.exists()) destDir.mkdirs();
-
+                if (!destDir.exists()) {
+                    destDir.mkdirs();
+                }
                 String fileExtension = getFileExtension(selectedFile);
                 File destinationFile = new File(destDir.getPath() + "/" + pAddress + "." + fileExtension);
                 Files.copy(selectedFile.toPath(), destinationFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-
-
                 String dbPath = "/images/profile_pics/" + destinationFile.getName();
-                String absolutePath = destinationFile.getAbsolutePath();
                 Model.getInstance().getDatabaseDriver().updateClientProfileImagePath(pAddress, dbPath);
                 Model.getInstance().getClient().profileImagePathProperty().set(dbPath);
-                updateProfilePictureUI(absolutePath);
-
                 showMessage("Profile picture updated!", false);
             } catch (Exception e) {
                 e.printStackTrace();

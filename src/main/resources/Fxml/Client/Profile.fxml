@@ -20,9 +20,9 @@
         </HBox>
 
         <HBox alignment="CENTER" spacing="20.0" styleClass="profile-header">
-            <ImageView fx:id="profile_image" fitHeight="110.0" fitWidth="110.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="profile_image" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="false">
                 <clip>
-                    <Circle radius="50.0" />
+                    <Circle radius="40.0" />
                 </clip>
             </ImageView>
             <Button fx:id="change_picture_btn" mnemonicParsing="false" styleClass="profile-button" text="Change Picture" />
