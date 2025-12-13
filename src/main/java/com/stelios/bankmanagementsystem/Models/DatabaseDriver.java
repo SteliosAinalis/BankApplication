@@ -1,16 +1,21 @@
 package com.stelios.bankmanagementsystem.Models;
 
+import java.io.InputStream;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.Scanner;
 
 public class DatabaseDriver {
     private Connection connection;
 
+
     public DatabaseDriver() {
-        try{
+        try {
             this.connection = DriverManager.getConnection("jdbc:sqlite:bank.db");
+            initializeDatabase();
         } catch (SQLException e) {
-            System.err.println("Error connecting to database.");
+            System.err.println("Error connecting to database: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -448,6 +453,39 @@ public class DatabaseDriver {
             statement.executeUpdate("UPDATE SavingsAccounts SET Balance="+amount+" WHERE Owner='"+pAddress+"';");
         } catch (SQLException e) {
             System.err.println("DATABASE ERROR executing depositSavings query.");
+        }
+    }
+
+
+
+    public void initializeDatabase() {
+        try {
+            if (connection == null || connection.isClosed()) {
+                System.err.println("Database connection is not available");
+                return;
+            }
+
+            InputStream ddlStream = getClass().getResourceAsStream("/database_schema.sql");
+            if (ddlStream == null) {
+                throw new RuntimeException("Could not find database_schema.sql in resources");
+            }
+
+            Scanner scanner = new Scanner(ddlStream).useDelimiter(";");
+            Statement statement = connection.createStatement();
+
+            while (scanner.hasNext()) {
+                String sql = scanner.next().trim();
+                if (!sql.isEmpty()) {
+                    statement.execute(sql);
+                }
+            }
+
+            scanner.close();
+            ddlStream.close();
+            statement.close();
+        } catch (Exception e) {
+            System.err.println("Error initializing database: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
