@@ -20,7 +20,7 @@
 
 <AnchorPane prefHeight="750.0" prefWidth="850.0" styleClass="dashboard" stylesheets="@../../Styles/DashBoard.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stelios.bankmanagementsystem.Controllers.Client.DashboardController">
     <!-- TOP SECTION: Welcome and Date -->
-    <Text fx:id="user_name" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="user_name" text="Hi, Stelios" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="30.0" />
+    <Text fx:id="user_name" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="user_name" text="Hi, Stelios" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="27.0" />
     <Label fx:id="login_date" styleClass="date_lbl" text="Today, 2025-11-21" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="27.0" />
 
     <Text strokeType="OUTSIDE" strokeWidth="0.0" styleClass="section_title" text="My Accounts" AnchorPane.leftAnchor="20.0" AnchorPane.topAnchor="90.0" />

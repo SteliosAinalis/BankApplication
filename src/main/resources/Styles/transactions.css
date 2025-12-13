@@ -9,6 +9,22 @@
     -fx-alignment: center;
 }
 
+.tittle Text{
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 2.5em;
+    -fx-fill: #888888;
+}
+
+.no-scrollbar .scroll-bar:vertical {
+    -fx-pref-width: 0;
+    -fx-opacity: 0;
+}
+
+.no-scrollbar .scroll-bar:horizontal {
+    -fx-pref-height: 0;
+    -fx-opacity: 0;
+}
+
 
 .all_transactions_listview .list-view,
 .all_transactions_listview .list-view .viewport {

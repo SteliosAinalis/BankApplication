@@ -2,6 +2,9 @@
     -fx-background-color: linear-gradient(to bottom, #f4f7fa, #e8ecf3);
 }
 
+
+
+
 .create_client_container Text {
     -fx-font-size: 1.2em;
     -fx-fill: #888888;
@@ -49,4 +52,19 @@
 
 .error_lbl{
     -fx-text-fill: #FF0000;
+}
+
+
+
+.tittle{
+    -fx-border-width: 0 0 0 0;
+    -fx-padding: 0;
+
+
+}
+.tittle Text{
+    -fx-font-family: "Calibri Light";
+    -fx-font-size: 2.5em;
+    -fx-fill: #888888;
+
 }

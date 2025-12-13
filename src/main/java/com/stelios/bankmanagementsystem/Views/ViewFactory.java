@@ -109,6 +109,13 @@ public class ViewFactory {
         createStage(loader);
     }
 
+    public void clearClientViews() {
+        dashboardView = null;
+        transactionsView = null;
+        accountsView = null;
+        profileView = null;
+    }
+
 
 
     //Admin Views

@@ -4,6 +4,7 @@ import com.stelios.bankmanagementsystem.Models.Client;
 import com.stelios.bankmanagementsystem.Models.Model;
 import com.stelios.bankmanagementsystem.Views.FriendCellFactory;
 import com.stelios.bankmanagementsystem.Views.SearchResultCellFactory;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -41,18 +42,49 @@ public class ProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        // This listener structure is correct.
         Model.getInstance().getClient().payeeAddressProperty().addListener((observable, oldAddress, newAddress) -> {
             if (newAddress != null && !newAddress.isEmpty()) {
-                updateProfilePictureUI(Model.getInstance().getClient().profileImagePathProperty().get());
+                bindProfileImage();
                 loadFriendsList();
             }
         });
-        updateProfilePictureUI(Model.getInstance().getClient().profileImagePathProperty().get());
+
+        bindProfileImage();
         loadFriendsList();
         save_password_btn.setOnAction(event -> onSavePassword());
         change_picture_btn.setOnAction(event -> onChangePicture());
         search_btn.setOnAction(event -> onSearch());
     }
+
+    private void bindProfileImage() {
+        // THE FIX: Revert to the simple, robust binding that works for the menu.
+        var imagePathProperty = Model.getInstance().getClient().profileImagePathProperty();
+
+        profile_image.imageProperty().bind(Bindings.createObjectBinding(() -> {
+            String path = imagePathProperty.get();
+            if (path != null && !path.isEmpty()) {
+                try {
+                    return new Image(getClass().getResourceAsStream(path));
+                } catch (Exception e) {
+                    System.err.println("Profile Page: Failed to load image from resource: " + path);
+                }
+            }
+            return new Image(getClass().getResourceAsStream("/images/profile_pics/default.jpg"));
+        }, imagePathProperty));
+
+        change_picture_btn.textProperty().bind(Bindings.when(imagePathProperty.isEmpty().or(imagePathProperty.isNull()))
+                .then("Set Up Profile Picture")
+                .otherwise("Change Picture"));
+
+        Circle clip = new Circle(40.0);
+        clip.centerXProperty().bind(profile_image.fitWidthProperty().divide(2));
+        clip.centerYProperty().bind(profile_image.fitHeightProperty().divide(2));
+        profile_image.setClip(clip);
+    }
+
+
+
 
     private void updateProfilePictureUI(String imagePath) {
         Image image = null;

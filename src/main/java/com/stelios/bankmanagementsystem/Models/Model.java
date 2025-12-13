@@ -168,6 +168,7 @@ public class Model {
         clientLoginSuccess = false;
         clients.clear();
         adminLoginSuccess = false;
+        viewFactory.clearClientViews();
     }
 
 

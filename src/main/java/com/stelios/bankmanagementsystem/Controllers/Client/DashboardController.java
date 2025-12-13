@@ -1,4 +1,3 @@
-
 package com.stelios.bankmanagementsystem.Controllers.Client;
 
 import com.stelios.bankmanagementsystem.Models.Model;
@@ -32,7 +31,6 @@ public class DashboardController implements Initializable {
     public TextField amount_fld;
     public TextArea message_fld;
     public Button send_money_btn;
-
     public ToggleGroup snapshot_toggle_group;
     public ToggleButton income_btn;
     public ToggleButton spending_btn;
@@ -41,6 +39,14 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Model.getInstance().getClient().payeeAddressProperty().addListener((observable, oldVal, newVal) -> {
+            if (newVal != null && !newVal.isEmpty()) {
+                bindData();
+                accountSummary();
+                populateIncomeByPayeeChart();
+            }
+        });
+
         bindData();
         Model.getInstance().setLatestTransactions();
         transaction_listview.setItems(Model.getInstance().getLatestTransactions());
@@ -60,8 +66,8 @@ public class DashboardController implements Initializable {
                 }
             }
         });
-        populateIncomeByPayeeChart();
         accountSummary();
+        populateIncomeByPayeeChart();
     }
 
     private void bindData() {
@@ -77,7 +83,6 @@ public class DashboardController implements Initializable {
         String receiver = payee_fld.getText();
         String sender = Model.getInstance().getClient().payeeAddressProperty().get();
         double amount;
-
         try {
             amount = Double.parseDouble(amount_fld.getText());
         } catch (NumberFormatException e) {
@@ -86,8 +91,6 @@ public class DashboardController implements Initializable {
         }
         String message = message_fld.getText();
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().searchClient(receiver);
-
-
         try {
             if (resultSet != null && resultSet.next()) {
                 Model.getInstance().getDatabaseDriver().updateBalance(sender, amount, "SUBTRACT");
@@ -96,7 +99,6 @@ public class DashboardController implements Initializable {
                 Transaction newTransaction = new Transaction(sender, receiver, amount, LocalDate.now(), message);
                 Model.getInstance().addTransaction(newTransaction);
                 updateSenderBalance(sender);
-
                 accountSummary();
                 populateIncomeByPayeeChart();
                 populateSpendingByPayeeChart();
@@ -116,7 +118,6 @@ public class DashboardController implements Initializable {
     private void updateSenderBalance(String sender) {
         double newSavingsBalance = Model.getInstance().getDatabaseDriver().getSavingsAccountBalance(sender);
         Model.getInstance().getClient().savingsAccountProperty().get().setBalance(newSavingsBalance);
-
         double newCheckingBalance = Model.getInstance().getDatabaseDriver().getCheckingAccountBalance(sender);
         Model.getInstance().getClient().checkingAccountProperty().get().setBalance(newCheckingBalance);
     }
@@ -132,7 +133,6 @@ public class DashboardController implements Initializable {
     private void populateIncomeByPayeeChart() {
         String currentUserAddress = Model.getInstance().getClient().payeeAddressProperty().get();
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().getIncomeByPayee(currentUserAddress);
-
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         try {
             while (resultSet != null && resultSet.next()) {
@@ -145,7 +145,6 @@ public class DashboardController implements Initializable {
         } finally {
             closeResources(resultSet);
         }
-
         income_pie_chart.setData(pieChartData);
         income_pie_chart.setTitle("Income by Payee");
     }
@@ -153,7 +152,6 @@ public class DashboardController implements Initializable {
     private void populateSpendingByPayeeChart() {
         String currentUserAddress = Model.getInstance().getClient().payeeAddressProperty().get();
         ResultSet resultSet = Model.getInstance().getDatabaseDriver().getSpendingByPayee(currentUserAddress);
-
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
         try {
             while (resultSet != null && resultSet.next()) {
@@ -180,6 +178,4 @@ public class DashboardController implements Initializable {
             e.printStackTrace();
         }
     }
-
-
 }

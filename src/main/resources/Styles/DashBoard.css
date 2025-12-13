@@ -6,10 +6,11 @@
 .user_name {
     -fx-font-size: 2.6em;
     -fx-font-family: "Calibri Light";
+    -fx-fill: #888888;
 }
 
 .date_lbl {
-    -fx-text-fill: #AAAAAA;
+    -fx-text-fill: #888888;
     -fx-font-size: 1.1em;
     -fx-font-family: "Calibri Light";
 }
