@@ -29,7 +29,6 @@ public class AccountsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // THE FIX: Add a listener that re-binds the account data when the user changes.
         Model.getInstance().getClient().payeeAddressProperty().addListener((observable, oldVal, newVal) -> {
             if (newVal != null && !newVal.isEmpty()) {
                 bindData();
@@ -42,7 +41,6 @@ public class AccountsController implements Initializable {
     }
 
     private void bindData() {
-        // THE FIX: Revert to the original, direct binding with the necessary casts.
         Client client = Model.getInstance().getClient();
         ch_acc_num.textProperty().bind(client.checkingAccountProperty().get().accountNumberProperty());
         transaction_limit.textProperty().bind(((CheckingAccount) client.checkingAccountProperty().get()).transactionLimitProperty().asString());

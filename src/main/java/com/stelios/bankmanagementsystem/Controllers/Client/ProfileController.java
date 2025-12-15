@@ -42,7 +42,6 @@ public class ProfileController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // This listener structure is correct.
         Model.getInstance().getClient().payeeAddressProperty().addListener((observable, oldAddress, newAddress) -> {
             if (newAddress != null && !newAddress.isEmpty()) {
                 bindProfileImage();
@@ -58,7 +57,6 @@ public class ProfileController implements Initializable {
     }
 
     private void bindProfileImage() {
-        // THE FIX: Revert to the simple, robust binding that works for the menu.
         var imagePathProperty = Model.getInstance().getClient().profileImagePathProperty();
 
         profile_image.imageProperty().bind(Bindings.createObjectBinding(() -> {
